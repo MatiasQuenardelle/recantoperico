@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import DatePickerBar from "@/components/DatePicker";
 
 export default function Hero() {
   return (
-    <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
+    <section className="relative h-screen flex flex-col items-center justify-center text-white overflow-hidden">
       {/* Background image */}
       <Image
         src="/images/hero/hero.png"
@@ -44,19 +45,9 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 z-20 animate-bounce">
-        <svg
-          className="w-6 h-6 text-white"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
+      {/* Date picker floating at bottom of hero */}
+      <div className="absolute bottom-0 left-0 right-0 z-20">
+        <DatePickerBar />
       </div>
     </section>
   );

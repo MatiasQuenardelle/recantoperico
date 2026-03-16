@@ -1,5 +1,4 @@
 import Hero from "@/components/Hero";
-import DatePickerSection from "@/components/DatePicker";
 import Destaques from "@/components/Destaques";
 import ApartamentoCard from "@/components/ApartamentoCard";
 import Sobre from "@/components/Sobre";
@@ -13,8 +12,6 @@ export default function Home() {
   return (
     <main>
       <Hero />
-
-      <DatePickerSection />
 
       <Destaques />
 
