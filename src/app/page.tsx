@@ -4,6 +4,7 @@ import Destaques from "@/components/Destaques";
 import ApartamentoCard from "@/components/ApartamentoCard";
 import Sobre from "@/components/Sobre";
 import GoogleMapSection from "@/components/GoogleMap";
+import Avaliacoes from "@/components/Avaliacoes";
 import ContatoForm from "@/components/ContatoForm";
 import { apartamentos } from "@/data/apartamentos";
 import Image from "next/image";
@@ -108,6 +109,8 @@ export default function Home() {
       </section>
 
       <Sobre />
+
+      <Avaliacoes />
 
       <GoogleMapSection />
 
