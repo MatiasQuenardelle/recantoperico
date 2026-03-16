@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { apartamentos } from "@/data/apartamentos";
 import {
@@ -13,17 +14,33 @@ import {
   FaBath,
   FaWhatsapp,
   FaArrowLeft,
+  FaTv,
+  FaSwimmingPool,
+  FaHotTub,
+  FaMicrophone,
+  FaBlender,
+  FaDoorOpen,
 } from "react-icons/fa";
+import { MdMicrowave, MdBalcony } from "react-icons/md";
+import { GiGasStove } from "react-icons/gi";
 import type { Metadata } from "next";
 
 const iconMap: Record<string, React.ReactNode> = {
-  "Wi-Fi": <FaWifi />,
+  "Wi-Fi de alta velocidade": <FaWifi />,
   "Ar condicionado": <FaSnowflake />,
   "Cozinha completa": <FaUtensils />,
+  "Micro-ondas": <MdMicrowave />,
+  Fogão: <GiGasStove />,
+  Geladeira: <FaDoorOpen />,
   "Roupa de cama e banho": <FaBath />,
-  Estacionamento: <FaCar />,
-  "Churrasqueira compartilhada": <FaFire />,
+  "TV com Smart TV": <FaTv />,
   "Sofá-cama": <FaCouch />,
+  Varanda: <MdBalcony />,
+  "Varanda com vista": <MdBalcony />,
+  Estacionamento: <FaCar />,
+  "Piscina compartilhada": <FaSwimmingPool />,
+  Jacuzzi: <FaHotTub />,
+  "Churrasqueira compartilhada": <FaFire />,
 };
 
 export async function generateStaticParams() {
@@ -40,7 +57,7 @@ export async function generateMetadata({
   if (!apt) return { title: "Apartamento não encontrado" };
 
   return {
-    title: `${apt.nome} — Recanto do Perico | Guarda do Embaú`,
+    title: `${apt.nome} — Recanto do Pericó | Guarda do Embaú`,
     description: apt.descricao,
   };
 }
@@ -56,12 +73,12 @@ export default async function ApartamentoPage({
   if (!apt) notFound();
 
   const message = encodeURIComponent(
-    `Olá Niceia! Tenho interesse no ${apt.nome} no Recanto do Perico. Poderia me informar sobre disponibilidade?`
+    `Olá Niceia! Tenho interesse no ${apt.nome} no Recanto do Pericó. Poderia me informar sobre disponibilidade?`
   );
 
   return (
     <main className="pt-20 pb-16">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-5xl mx-auto px-4">
         {/* Back button */}
         <Link
           href="/#apartamentos"
@@ -71,23 +88,42 @@ export default async function ApartamentoPage({
           Voltar aos apartamentos
         </Link>
 
-        {/* Image gallery placeholder */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-          <div className="h-72 md:h-96 bg-gradient-to-br from-emerald-200 to-teal-300 rounded-2xl flex items-center justify-center text-emerald-700">
-            <div className="text-center">
-              <p className="text-xl font-medium">{apt.nome}</p>
-              <p className="text-sm opacity-70">Foto principal em breve</p>
-            </div>
+        {/* Image gallery */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+          <div className="relative h-72 md:h-96 md:col-span-2 rounded-2xl overflow-hidden">
+            <Image
+              src={apt.imagens[0]}
+              alt={`${apt.nome} — foto principal`}
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            {[1, 2, 3, 4].map((i) => (
+          <div className="grid grid-rows-2 gap-4">
+            {apt.imagens.slice(1, 3).map((img, i) => (
               <div
                 key={i}
-                className="h-[calc(12rem-0.5rem)] md:h-[calc(12rem-0.5rem)] bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center text-emerald-600 text-sm"
+                className="relative h-36 md:h-[calc(12rem-0.5rem)] rounded-xl overflow-hidden"
               >
-                Foto {i + 1}
+                <Image
+                  src={img}
+                  alt={`${apt.nome} — foto ${i + 2}`}
+                  fill
+                  className="object-cover"
+                />
               </div>
             ))}
+            {/* If less than 3 images, show pool area */}
+            {apt.imagens.length < 3 && (
+              <div className="relative h-36 md:h-[calc(12rem-0.5rem)] rounded-xl overflow-hidden">
+                <Image
+                  src="/images/areas/pool.png"
+                  alt="Área de lazer — piscina"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -109,14 +145,14 @@ export default async function ApartamentoPage({
               </span>
             </div>
 
-            <p className="text-gray-600 leading-relaxed text-lg mb-8">
+            <p className="text-gray-600 leading-relaxed text-lg mb-10">
               {apt.descricao}
             </p>
 
             <h2 className="text-xl font-bold text-gray-900 mb-4">
               Amenidades
             </h2>
-            <div className="grid grid-cols-2 gap-3 mb-8">
+            <div className="grid grid-cols-2 gap-3 mb-10">
               {apt.amenidades.map((a) => (
                 <div
                   key={a}
@@ -129,29 +165,91 @@ export default async function ApartamentoPage({
                 </div>
               ))}
             </div>
+
+            {/* Area photos */}
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              Área de Lazer
+            </h2>
+            <div className="grid grid-cols-3 gap-3 mb-8">
+              <div className="relative h-32 rounded-lg overflow-hidden">
+                <Image
+                  src="/images/areas/pool.png"
+                  alt="Piscina"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-32 rounded-lg overflow-hidden">
+                <Image
+                  src="/images/areas/jacuzzi.png"
+                  alt="Jacuzzi"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-32 rounded-lg overflow-hidden">
+                <Image
+                  src="/images/areas/pool2.png"
+                  alt="Espreguiçadeiras"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Sidebar */}
           <div className="md:col-span-1">
             <div className="sticky top-24 bg-emerald-50 rounded-2xl p-6">
-              <p className="text-sm text-gray-500 mb-1">A partir de</p>
-              <p className="text-2xl font-bold text-emerald-800 mb-4">
+              <p className="text-sm text-gray-500 mb-1">Diárias a partir de</p>
+              <p className="text-2xl font-bold text-emerald-800 mb-2">
                 {apt.preco}
+              </p>
+              <p className="text-xs text-gray-500 mb-6">
+                Valores variam conforme temporada
               </p>
 
               <a
                 href={`https://wa.me/5500000000000?text=${message}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mb-3"
+                className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3.5 rounded-lg transition-colors flex items-center justify-center gap-2 mb-4"
               >
                 <FaWhatsapp className="text-xl" />
                 Reservar via WhatsApp
               </a>
 
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-xs text-gray-500 text-center mb-6">
                 Fale diretamente com a Niceia
               </p>
+
+              <div className="border-t border-emerald-200 pt-4">
+                <h3 className="font-semibold text-gray-800 mb-3 text-sm">
+                  Destaques
+                </h3>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2">
+                    <FaSwimmingPool className="text-emerald-600" />
+                    Piscina com cascata
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <FaHotTub className="text-emerald-600" />
+                    Jacuzzi
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <FaWifi className="text-emerald-600" />
+                    Wi-Fi rápido
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <FaSnowflake className="text-emerald-600" />
+                    Ar condicionado
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <FaCar className="text-emerald-600" />
+                    Estacionamento
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

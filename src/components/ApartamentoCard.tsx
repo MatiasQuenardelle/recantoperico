@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FaBed, FaUsers } from "react-icons/fa";
 import type { Apartamento } from "@/data/apartamentos";
@@ -5,12 +6,14 @@ import type { Apartamento } from "@/data/apartamentos";
 export default function ApartamentoCard({ apt }: { apt: Apartamento }) {
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow group">
-      {/* Image placeholder */}
-      <div className="h-56 bg-gradient-to-br from-emerald-200 to-teal-300 flex items-center justify-center text-emerald-700 relative overflow-hidden">
-        <div className="text-center">
-          <p className="text-lg font-medium">{apt.nome}</p>
-          <p className="text-sm opacity-70">Foto em breve</p>
-        </div>
+      {/* Image */}
+      <div className="relative h-56 overflow-hidden">
+        <Image
+          src={apt.imagemPrincipal}
+          alt={apt.nome}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+        />
       </div>
 
       <div className="p-6">
@@ -29,7 +32,7 @@ export default function ApartamentoCard({ apt }: { apt: Apartamento }) {
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4">
-          {apt.amenidades.slice(0, 3).map((a) => (
+          {apt.amenidades.slice(0, 4).map((a) => (
             <span
               key={a}
               className="bg-emerald-50 text-emerald-700 text-xs px-3 py-1 rounded-full"
@@ -37,9 +40,9 @@ export default function ApartamentoCard({ apt }: { apt: Apartamento }) {
               {a}
             </span>
           ))}
-          {apt.amenidades.length > 3 && (
+          {apt.amenidades.length > 4 && (
             <span className="text-xs text-gray-400">
-              +{apt.amenidades.length - 3} mais
+              +{apt.amenidades.length - 4} mais
             </span>
           )}
         </div>
